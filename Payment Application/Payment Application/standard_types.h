@@ -1,0 +1,6 @@
+#ifndef STANDARD_TYPES_H
+#define STANDARD_TYPES_H
+
+
+
+#endif // !STANDARD_TYPES_H
