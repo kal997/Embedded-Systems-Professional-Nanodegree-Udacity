@@ -21,6 +21,7 @@ EN_cardError_t getCardHolderName(ST_cardData_t* cardData);
 EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData);
 EN_cardError_t getCardPAN(ST_cardData_t* cardData);
 void stringCopy(uint8_t*, uint8_t*);
+uint8_t stringLength(uint8_t* str);
 
 
 #endif // !CARD_H

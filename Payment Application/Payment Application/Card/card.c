@@ -75,6 +75,30 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData)
 EN_cardError_t getCardPAN(ST_cardData_t* cardData)
 {
 
+	printf("Please enter card PAN number: ");
+
+	char enteredPAN[25];
+	gets_s(enteredPAN, 25);
+	uint8_t enteredPANLen = strlen(enteredPAN);
+	uint8_t i;
+	if (enteredPANLen >= 16 && enteredPANLen <= 19)
+	{
+		for (i = 0; i < enteredPANLen; i++)
+		{
+			if (enteredPAN[i] < '0' || enteredPAN[i] > '9')
+			{
+				return WRONG_PAN;
+			}
+		}
+		
+		stringCopy(enteredPAN, cardData->primaryAccountNumber);
+		return OK;
+	}
+	else
+	{
+		return WRONG_PAN;
+	}
+
 }
 
 void stringCopy(uint8_t* src, uint8_t* dest)
@@ -82,4 +106,17 @@ void stringCopy(uint8_t* src, uint8_t* dest)
 	uint8_t i;
 	for (i = 0; src[i] != '\0'; i++) dest[i] = src[i];
 	dest[i] = '\0';
+}
+
+uint8_t stringLength(uint8_t* str)
+{
+	uint8_t len=0;
+	
+	while (str[len++])
+	{
+		printf("%d, ", str[len - 1]);
+	}
+	
+	return len-1;
+
 }
