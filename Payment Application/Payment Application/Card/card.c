@@ -5,6 +5,8 @@
 #include<string.h>
 #include "card.h"
 
+static void stringCopy(uint8_t*, uint8_t*);
+static uint8_t stringLength(uint8_t* str);
 
 EN_cardError_t getCardHolderName(ST_cardData_t* cardData)
 {
@@ -12,7 +14,7 @@ EN_cardError_t getCardHolderName(ST_cardData_t* cardData)
 	uint8_t enteredName[30];
 	uint8_t enteredNameLen;
 	printf("Please enter card holder name: ");
-	gets(enteredName);
+	gets_s(enteredName, 30);
 	enteredNameLen = strlen(enteredName);
 
 	if (enteredNameLen == 0 || enteredNameLen > 24)
@@ -36,7 +38,7 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData)
 	printf("Please enter card expiration date: ");
 	
 	char enteredDate[10];
-	gets(enteredDate);
+	gets_s(enteredDate, 10);
 	uint8_t enteredDateLen = strlen(enteredDate);
 	uint8_t i, cnt=0;
 	
@@ -101,14 +103,14 @@ EN_cardError_t getCardPAN(ST_cardData_t* cardData)
 
 }
 
-void stringCopy(uint8_t* src, uint8_t* dest)
+static void stringCopy(uint8_t* src, uint8_t* dest)
 {
 	uint8_t i;
 	for (i = 0; src[i] != '\0'; i++) dest[i] = src[i];
 	dest[i] = '\0';
 }
 
-uint8_t stringLength(uint8_t* str)
+static uint8_t stringLength(uint8_t* str)
 {
 	uint8_t len=0;
 	
