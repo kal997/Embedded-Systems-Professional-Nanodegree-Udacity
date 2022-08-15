@@ -107,5 +107,16 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t* termData)
 
 }
 EN_terminalError_t isBelowMaxAmount(ST_terminalData_t* termData);
-EN_terminalError_t setMaxAmount(ST_terminalData_t* termData);
+EN_terminalError_t setMaxAmount(ST_terminalData_t* termData)
+{
+	float maxTransactionAmount;
+
+	printf("Please enter the maximum transaction amount: ");
+	scanf("%f", &maxTransactionAmount);
+	if (maxTransactionAmount <= 0) return INVALID_MAX_AMOUNT;
+
+	termData->maxTransAmount = maxTransactionAmount;
+	return TERMINAL_OK;
+
+}
 
