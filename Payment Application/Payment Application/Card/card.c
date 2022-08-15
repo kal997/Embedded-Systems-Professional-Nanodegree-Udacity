@@ -62,7 +62,7 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData)
 
 
 		// to unify the separating symbol.
-		enteredDate[2] = '-';
+		enteredDate[2] = '/';
 		stringCopy(enteredDate, cardData->cardExpirationDate);
 		return OK;
 		
