@@ -79,21 +79,31 @@ EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termD
 
 }
 
+EN_terminalError_t isValidCardPAN(ST_cardData_t* cardData)
+{
+	char i;
+	unsigned char multNum, luhnTot = 0,oddElementFlag = 0;
+	unsigned char panLen = strlen(cardData->primaryAccountNumber);
 
+	for (i = panLen-1; i>=0; i--)
+	{
 
+		if (oddElementFlag)
+		{
+			multNum = 2 * (cardData->primaryAccountNumber[i] - '0');
+			if (multNum > 9) multNum = (multNum % 10) + (multNum / 10);
+		}
+		else
+		{
+			multNum = cardData->primaryAccountNumber[i] - '0';
+		}
 
+		oddElementFlag = !oddElementFlag;
+		luhnTot += multNum;
 
-
-
-
-
-
-
-
-
-
-
-EN_terminalError_t isValidCardPAN(ST_cardData_t* cardData);
+	}
+	return luhnTot % 10 == 0 ? OK: INVALID_CARD;
+}
 EN_terminalError_t getTransactionAmount(ST_terminalData_t* termData)
 {
 	float transactionAmount;
