@@ -8,7 +8,7 @@
 typedef enum {
 	QUIT,
 	PROCEED
-}En_userOptions_t;
+}En_options_t;
 
 void appStart(void);
 
