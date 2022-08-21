@@ -112,41 +112,41 @@ EN_transState_t recieveTransactionData(ST_transaction_t* transData)
 	switch (errAccountValidation)
 	{
 	case SERVER_OK:
-		printf("res: VALID ACCOUNT\n");
-		printf("%s\n", foundAccountPtr->primaryAccountNumber);
-		printf("%f\n", foundAccountPtr->balance);
-		printf("%s\n", foundAccountPtr->state == 0?"(RUNNING)":"(BLOCKED)");
-		printf("******************valid done ************************\n");
+		//printf("res: VALID ACCOUNT\n");
+		//printf("%s\n", foundAccountPtr->primaryAccountNumber);
+		//printf("%f\n", foundAccountPtr->balance);
+		//printf("%s\n", foundAccountPtr->state == 0?"(RUNNING)":"(BLOCKED)");
+		//printf("******************valid done ************************\n");
 
 		errIsBlocked = isBlockedAccount(foundAccountPtr);
 
 		if (errIsBlocked == BLOCKED_ACCOUNT)
 		{
-			printf("BLOCKED\n******blocked done*******\n");
+			//printf("BLOCKED\n******blocked done*******\n");
 			errRecieveTransaction = DECLINED_STOLEN_CARD;
-			printf("declined 3shan stolen");
+			//printf("declined 3shan stolen");
 		}
 		else if (errIsBlocked == SERVER_OK)
 		{
-			printf("RUNNING\n********block done*********");
+			//printf("RUNNING\n********block done*********");
 			errAmountAvailable = isAmountAvailable(&transData->terminalData, foundAccountPtr);
 			if (errAmountAvailable == LOW_BALANCE)
 			{
-				printf("\n * *******isAmountDone***\n*** mafesh fund******");
+				//printf("\n * *******isAmountDone***\n*** mafesh fund******");
 				errRecieveTransaction = DECLINED_INSUFFECIENT_FUND;
 			}
 			else if(errAmountAvailable == SERVER_OK)
 			{
-				printf("\n * *******isAmountDone***\n*** fe fund******");
+				//printf("\n * *******isAmountDone***\n*** fe fund******");
 				transData->transState = APPROVED;
 				errSaveTransaction = saveTransaction(transData);
 				if (errSaveTransaction == SAVING_FAILED) errRecieveTransaction = INTERNAL_SERVER_ERROR;
 				else if (errSaveTransaction == SERVER_OK)
 				{
-					printf("\n * *******saveTransacDone***\n*********");
-					printf("\n balance: %f\n", foundAccountPtr->balance);
+					//printf("\n * *******saveTransacDone***\n*********");
+					//printf("\n balance: %f\n", foundAccountPtr->balance);
 					foundAccountPtr->balance -= transData->terminalData.transAmount;
-					printf("\n balance: %f\n", foundAccountPtr->balance);
+					//printf("\n balance: %f\n", foundAccountPtr->balance);
 					errRecieveTransaction = APPROVED;
 				}
 			}
