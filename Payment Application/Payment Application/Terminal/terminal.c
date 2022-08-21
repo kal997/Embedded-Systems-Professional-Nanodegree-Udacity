@@ -54,17 +54,17 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t* termData)
 	return err;
 }
 
-EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termData)
+EN_terminalError_t isCardExpired(ST_cardData_t* cardData, ST_terminalData_t* termData)
 {
 	// 08/22
 	// 12/08/2022
 
-	uint8_t cardExpMon[3] = { cardData.cardExpirationDate[0],cardData.cardExpirationDate[1], '\0' };
-	uint8_t cardExpYear[3] = { cardData.cardExpirationDate[3],cardData.cardExpirationDate[4], '\0'};
+	uint8_t cardExpMon[3] = { cardData->cardExpirationDate[0],cardData->cardExpirationDate[1], '\0' };
+	uint8_t cardExpYear[3] = { cardData->cardExpirationDate[3],cardData->cardExpirationDate[4], '\0'};
 
 
-	uint8_t TransacMon[3] = { termData.transactionDate[3],termData.transactionDate[4], '\0' };
-	uint8_t TransacYear[3] = { termData.transactionDate[8],termData.transactionDate[9], '\0'};
+	uint8_t TransacMon[3] = { termData->transactionDate[3],termData->transactionDate[4], '\0' };
+	uint8_t TransacYear[3] = { termData->transactionDate[8],termData->transactionDate[9], '\0'};
 
 	
 	if (atoi(cardExpYear) > atoi(TransacYear)) return TERMINAL_OK;
