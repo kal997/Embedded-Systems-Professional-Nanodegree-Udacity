@@ -102,7 +102,7 @@ EN_terminalError_t isValidCardPAN(ST_cardData_t* cardData)
 		luhnTot += multNum;
 
 	}
-	return luhnTot % 10 == 0 ? OK: INVALID_CARD;
+	return luhnTot % 10 == 0 ? CARD_OK: INVALID_CARD;
 }
 EN_terminalError_t getTransactionAmount(ST_terminalData_t* termData)
 {
