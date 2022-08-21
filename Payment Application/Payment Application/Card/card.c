@@ -25,7 +25,7 @@ EN_cardError_t getCardHolderName(ST_cardData_t* cardData)
 	else
 	{
 		stringCopy(enteredName, cardData->cardHolderName);
-		err = OK;
+		err = CARD_OK;
 		return err;
 	}
 
@@ -64,7 +64,7 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData)
 		// to unify the separating symbol.
 		enteredDate[2] = '/';
 		stringCopy(enteredDate, cardData->cardExpirationDate);
-		return OK;
+		return CARD_OK;
 		
 	}
 
@@ -94,7 +94,7 @@ EN_cardError_t getCardPAN(ST_cardData_t* cardData)
 		}
 		
 		stringCopy(enteredPAN, cardData->primaryAccountNumber);
-		return OK;
+		return CARD_OK;
 	}
 	else
 	{
