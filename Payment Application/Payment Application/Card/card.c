@@ -7,6 +7,8 @@
 
 static void stringCopy(uint8_t*, uint8_t*);
 static uint8_t stringLength(uint8_t* str);
+static int8_t isAlphabetic(char* str);
+
 
 EN_cardError_t getCardHolderName(ST_cardData_t* cardData)
 {
@@ -17,17 +19,27 @@ EN_cardError_t getCardHolderName(ST_cardData_t* cardData)
 	gets_s(enteredName, 30);
 	enteredNameLen = strlen(enteredName);
 
+	// checking the length
 	if (enteredNameLen == 0 || enteredNameLen > 24)
 	{
 		err = WRONG_NAME;
-		return err;
 	}
 	else
 	{
-		stringCopy(enteredName, cardData->cardHolderName);
-		err = CARD_OK;
-		return err;
+		if (isAlphabetic(enteredName))
+		{
+			stringCopy(enteredName, cardData->cardHolderName);
+			err = CARD_OK;
+		}
+		else
+		{
+			err = WRONG_NAME;
+		}
+		
 	}
+	return err;
+
+
 
 }
 
@@ -121,4 +133,17 @@ static uint8_t stringLength(uint8_t* str)
 	
 	return len-1;
 
+}
+
+
+static int8_t isAlphabetic(char* str)
+{
+	int8_t i;
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') || (str[i] == ' ')) continue;
+		else return 0;
+
+	}
+	return 1;
 }
