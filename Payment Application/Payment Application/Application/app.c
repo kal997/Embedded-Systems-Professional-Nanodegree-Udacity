@@ -129,14 +129,48 @@ void appStart(void)
 	
 	
 	/***************************** SERVER *******************************************/
+	En_options_t serverDecision;
 	if ((terminalDecision == PROCEED) && (userDecision == PROCEED))
 	{
-		printf("PROCEED");
+		ST_transaction_t transaction;
+		transaction.cardHolderData = userCard;
+		transaction.terminalData = terminal;
+		
+		EN_transState_t errTransacState = recieveTransactionData(&transaction);
+		switch (errTransacState)
+		{
+		case APPROVED:
+			printf("Valid card.\n");
+			printf("Suffecient fund.\n");
+			printf("Saving transaction: Done\n");
+			printf("Transaction succeeded.\n");
+			break;
+		case DECLINED_INSUFFECIENT_FUND:
+			printf("Valid card.\n");
+			printf("Declined insuffecient fund.\n");
+			break;
+		case DECLINED_STOLEN_CARD:
+			printf("Declined stolen card.\n");
+			break;
+		case FRAUD_CARD:
+			printf("Fraud Card.\n");
+			break;
+		case INTERNAL_SERVER_ERROR:
+			printf("Valid card.\n");
+			printf("Suffecient fund.\n");
+			printf("Internal server error\n");
+			break;
+		default:
+			break;
+		}
 	}
 	else
 	{
-		printf("quit");
+		printf("quitting..\n");
+
 	}
+
+	printf("Thanks.\n");
 
 
 
