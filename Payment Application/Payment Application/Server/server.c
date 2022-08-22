@@ -63,6 +63,9 @@ EN_serverError_t saveTransaction(ST_transaction_t* transData)
 		// saving the transaction sequence number.
 		transData->transactionSequenceNumber = generatedTransactionSequenceNumber;
 		
+		//////////////////////////////////////////////////////////////////////////////
+		////////// commenting this line mimics saving transaction error //////////////
+		//////////////////////////////////////////////////////////////////////////////
 		// saving the transaction struct, and increment the transactionDBIdx by 1 for the future transaction.
 		transactionDB[transactionDBIdx++] = *transData;
 		
@@ -70,10 +73,7 @@ EN_serverError_t saveTransaction(ST_transaction_t* transData)
 		// checking if the transaction saved or not.
 		ST_transaction_t* foundTransData = NULL; // defined only to be passed to getTransaction function(obeying function's interface rules).
 		
-		// giving errGetTransaction default value
-		// to be able to comment getTransaction call for testing purposes.
-		EN_serverError_t errGetTransaction = TRANSACTION_NOT_FOUND;
-		errGetTransaction = getTransaction(generatedTransactionSequenceNumber, foundTransData);
+		EN_serverError_t errGetTransaction = getTransaction(generatedTransactionSequenceNumber, foundTransData);
 		if (errGetTransaction == SERVER_OK)
 		{
 			// if it's found, return serverOk
