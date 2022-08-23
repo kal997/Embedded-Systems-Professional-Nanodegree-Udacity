@@ -86,16 +86,35 @@ void appStart(void)
 		En_options_t userEnterAmountDecision = PROCEED;
 
 
-		getTransactionDate(&terminal);
-		setMaxAmount(&terminal);
-
-		errIsCardExpired = isCardExpired(&userCard, &terminal);
-		if (errIsCardExpired == EXPIRED_CARD)
+		// checking PAN if it's a luhn number
+		errIsValidPAN = isValidCardPAN(&userCard);
+		if (errIsValidPAN == INVALID_CARD)
 		{
-			printf("Declined Card\nExpired Card.");
+			printf("Declined Card\nNot a real PAN number (not a luhn number).\n");
+			terminalDecision = QUIT;
 		}
-		else if (errIsCardExpired == TERMINAL_OK)
+		
+		// getting the transaction date.
+		getTransactionDate(&terminal);
+		errIsCardExpired = isCardExpired(&userCard, &terminal);
+
+		
+		if (errIsCardExpired == EXPIRED_CARD && errIsValidPAN == CARD_OK)
 		{
+			printf("Declined Card\nExpired Card.\n");
+			terminalDecision = QUIT;
+		}
+		else if (errIsCardExpired == TERMINAL_OK && errIsValidPAN == CARD_OK)
+		{
+			terminal.maxTransAmount = 50000;
+
+			system("cls");
+			printf("NAME: %s\n", userCard.cardHolderName);
+			printf("EXP DATE: % s\n", userCard.cardExpirationDate);
+			printf("PAN: %s\n\n", userCard.primaryAccountNumber);
+			printf("MAX AMOUNT: %.3f\n", terminal.maxTransAmount);
+			//setMaxAmount(&terminal);
+
 			while ((terminalDecision == PROCEED) && (userEnterAmountDecision == PROCEED))
 			{
 				errSetTransacAmount = getTransactionAmount(&terminal);
