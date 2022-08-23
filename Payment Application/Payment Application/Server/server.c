@@ -3,7 +3,7 @@
 
 
 
-static ST_accountsDB_t accountsDB[] = { { 15000.5, RUNNING, "27983973780030443" }, {1456.6,BLOCKED, "5261716147787190"}, {14590.352,BLOCKED, "2170049069582404320"}};
+static ST_accountsDB_t accountsDB[] = { { 15000.5F, RUNNING, "27983973780030443" }, {1456.6F,BLOCKED, "5261716147787190"}, {14590.35F,BLOCKED, "2170049069582404320"}};
 static ST_transaction_t transactionDB[TRANSACTION_DB_SIZE] = { 0 };
 static uint8_t transactionDBIdx = 0;
 uint32_t number = 50;
