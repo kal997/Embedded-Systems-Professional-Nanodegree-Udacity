@@ -3,7 +3,7 @@
 
 
 
-static ST_accountsDB_t accountsDB[] = { { 15000.5, RUNNING, "27983973780030443" }, {1456.6,BLOCKED, "5261716147787190"}, {14590.352,BLOCKED, "2170049069582404320"}};
+static ST_accountsDB_t accountsDB[] = { { 15000.5F, RUNNING, "27983973780030443" }, {1456.6F,BLOCKED, "5261716147787190"}, {14590.35F,BLOCKED, "2170049069582404320"}};
 static ST_transaction_t transactionDB[TRANSACTION_DB_SIZE] = { 0 };
 static uint8_t transactionDBIdx = 0;
 uint32_t number = 50;
@@ -63,12 +63,16 @@ EN_serverError_t saveTransaction(ST_transaction_t* transData)
 		// saving the transaction sequence number.
 		transData->transactionSequenceNumber = generatedTransactionSequenceNumber;
 		
+		//////////////////////////////////////////////////////////////////////////////
+		////////// commenting this line mimics saving transaction error //////////////
+		//////////////////////////////////////////////////////////////////////////////
 		// saving the transaction struct, and increment the transactionDBIdx by 1 for the future transaction.
 		transactionDB[transactionDBIdx++] = *transData;
 		
 
 		// checking if the transaction saved or not.
-		ST_transaction_t* foundTransData = NULL;
+		ST_transaction_t* foundTransData = NULL; // defined only to be passed to getTransaction function(obeying function's interface rules).
+		
 		EN_serverError_t errGetTransaction = getTransaction(generatedTransactionSequenceNumber, foundTransData);
 		if (errGetTransaction == SERVER_OK)
 		{
@@ -112,41 +116,41 @@ EN_transState_t recieveTransactionData(ST_transaction_t* transData)
 	switch (errAccountValidation)
 	{
 	case SERVER_OK:
-		printf("res: VALID ACCOUNT\n");
-		printf("%s\n", foundAccountPtr->primaryAccountNumber);
-		printf("%f\n", foundAccountPtr->balance);
-		printf("%s\n", foundAccountPtr->state == 0?"(RUNNING)":"(BLOCKED)");
-		printf("******************valid done ************************\n");
+		//printf("res: VALID ACCOUNT\n");
+		//printf("%s\n", foundAccountPtr->primaryAccountNumber);
+		//printf("%f\n", foundAccountPtr->balance);
+		//printf("%s\n", foundAccountPtr->state == 0?"(RUNNING)":"(BLOCKED)");
+		//printf("******************valid done ************************\n");
 
 		errIsBlocked = isBlockedAccount(foundAccountPtr);
 
 		if (errIsBlocked == BLOCKED_ACCOUNT)
 		{
-			printf("BLOCKED\n******blocked done*******\n");
+			//printf("BLOCKED\n******blocked done*******\n");
 			errRecieveTransaction = DECLINED_STOLEN_CARD;
-			printf("declined 3shan stolen");
+			//printf("declined 3shan stolen");
 		}
 		else if (errIsBlocked == SERVER_OK)
 		{
-			printf("RUNNING\n********block done*********");
+			//printf("RUNNING\n********block done*********");
 			errAmountAvailable = isAmountAvailable(&transData->terminalData, foundAccountPtr);
 			if (errAmountAvailable == LOW_BALANCE)
 			{
-				printf("\n * *******isAmountDone***\n*** mafesh fund******");
+				//printf("\n * *******isAmountDone***\n*** mafesh fund******");
 				errRecieveTransaction = DECLINED_INSUFFECIENT_FUND;
 			}
 			else if(errAmountAvailable == SERVER_OK)
 			{
-				printf("\n * *******isAmountDone***\n*** fe fund******");
+				//printf("\n * *******isAmountDone***\n*** fe fund******");
 				transData->transState = APPROVED;
 				errSaveTransaction = saveTransaction(transData);
 				if (errSaveTransaction == SAVING_FAILED) errRecieveTransaction = INTERNAL_SERVER_ERROR;
 				else if (errSaveTransaction == SERVER_OK)
 				{
-					printf("\n * *******saveTransacDone***\n*********");
-					printf("\n balance: %f\n", foundAccountPtr->balance);
+					//printf("\n * *******saveTransacDone***\n*********");
+					//printf("\n balance: %f\n", foundAccountPtr->balance);
 					foundAccountPtr->balance -= transData->terminalData.transAmount;
-					printf("\n balance: %f\n", foundAccountPtr->balance);
+					//printf("\n balance: %f\n", foundAccountPtr->balance);
 					errRecieveTransaction = APPROVED;
 				}
 			}
